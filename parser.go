@@ -69,12 +69,13 @@ func Parse(reader io.Reader) (*Torrent, error) {
 	}
 
 	return &Torrent{
-		Announce:  announces,
+		Announce:  announces[0],
 		Comment:   metadata.Comment,
 		CreatedBy: metadata.CreatedBy,
 		CreatedAt: time.Unix(metadata.CreatedAt, 0),
 		InfoHash:  toSHA1(metadata.Info),
 		Files:     files,
+		Metadata:  metadata,
 	}, nil
 }
 
@@ -86,4 +87,15 @@ func ParseFromFile(path string) (*Torrent, error) {
 	defer file.Close()
 
 	return Parse(file)
+}
+
+// Function for creating a new torrent with old info fieldf
+func NewTorrent(announce string, infoField bencode.RawMessage) ([]byte, error) {
+
+	var newTorrent TorrentCreate
+
+	newTorrent.Announce = announce
+	newTorrent.InfoField = infoField
+
+	return bencode.EncodeBytes(newTorrent)
 }
