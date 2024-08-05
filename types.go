@@ -45,7 +45,7 @@ type File struct {
 
 type Torrent struct {
 	// Announce URL
-	Announce string
+	Announce []string
 
 	// Torrent comment
 	Comment string
@@ -68,8 +68,8 @@ type Torrent struct {
 // Object for creating a new torrent file with info field intact
 type TorrentCreate struct {
 	// Announce URL
-	Announce string `bencode:"announce"`
-
+	Announce     string   `bencode:"announce"`
+	AnnounceList []string `bencode:"announce-list"`
 	// Torrent comment
 	//Comment string `bencode:"comment"`
 
